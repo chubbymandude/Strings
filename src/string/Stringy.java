@@ -37,6 +37,7 @@ CharSequence, Serializable, Comparable<Stringy>
 		}
 	}
 	
+	//Assigns the character array of this class to the passed in array
 	public Stringy(char[] string)
 	{
 		this.string = new char[string.length];
@@ -50,32 +51,89 @@ CharSequence, Serializable, Comparable<Stringy>
 		}
 	}
 	
-	@Override
-	public int compareTo(Stringy o) 
+	//Converts a standard String to a Stringy
+	public Stringy(String string)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		this(string.toCharArray());
+	}
+	
+	//Converts a StringBuffer object to a Stringy
+	public Stringy(StringBuffer buffer)
+	{
+		this(buffer.toString());
+	}
+	
+	//Converts a StringBuilder object to a Stringy
+	public Stringy(StringBuilder builder)
+	{
+		this(builder.toString());
+	}
+	
+	/*
+	 * Compares two Stringy objects by comparing the individual
+	 * characters at each index until they are not equal or
+	 * one of the arrays goes out of bounds.
+	 * 
+	 * If the arrays go out of bounds, the formula is this: 
+	 * this.length - other.length
+	 * 
+	 * Otherwise, the formula is this: this.charAt(index) - other.charAt(index)
+	 * 
+	 * This method does not ignore case
+	 */
+	@Override
+	public int compareTo(Stringy other) 
+	{
+		int index = 0;
+		//Loop until the characters don't match or index is out of bounds
+		while(index < this.length() && index < other.length() && 
+	    this.charAt(index) == other.charAt(index))
+		{
+			index++;
+		}
+		//Compare based on length if out of bounds
+		if(index == this.length() || index == other.length())
+		{
+			return this.length() - other.length();
+		}
+		//If lengths are equal, compare based on characters at index
+		return this.charAt(index) - other.charAt(index);
 	}
 
+	//The length of Stringy is the length of the char array
 	@Override
 	public int length() 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return string.length;
 	}
 
+	//Simple element grab from the array
 	@Override
 	public char charAt(int index) 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		if(index < 0 || index > string.length)
+		{
+			throw new IndexOutOfBoundsException("Index are out of bounds.");
+		}
+		return string[index];
 	}
 
+	//Returns a subsequence object of this Stringy object
 	@Override
 	public CharSequence subSequence(int start, int end) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(start < 0 || end > string.length)
+		{
+			throw new IndexOutOfBoundsException("Indices are out of bounds.");
+		}
+		char[] sub = new char[end - start];
+		//Re-assign values
+		for(int index = 0; index < sub.length; index++)
+		{
+			sub[index] = string[index + start];
+		}
+		//Uses the char array constructor to create a new CharSequence
+		return new Stringy(sub);
 	}
 	
 	/*
