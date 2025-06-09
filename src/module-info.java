@@ -5,4 +5,5 @@
  * 
  */
 module StringProject {
+	requires junit;
 }
